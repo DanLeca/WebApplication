@@ -1,0 +1,48 @@
+﻿@model ProjectPlan.Models.GroupDetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Group</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.Id)
+        </dt>
+        <dd>
+            @Html.DisplayNameFor(model => model.Group.Id)
+        </dd>
+    </dl>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Blog Title
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.Contacts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Group.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
