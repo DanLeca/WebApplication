@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProjectPlan.Models
 {
@@ -21,6 +18,16 @@ namespace ProjectPlan.Models
 
         [Required]
         public string Description
+        {
+            get; set;
+        }
+
+        public ApplicationUser ApplicationUser
+        {
+            get; set;
+        }
+
+        public virtual ICollection<Comment> Comment
         {
             get; set;
         }

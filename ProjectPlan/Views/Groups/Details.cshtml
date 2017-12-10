@@ -1,48 +1,44 @@
-﻿@model ProjectPlan.Models.GroupDetailsModel
+﻿@model IEnumerable<ProjectPlan.Models.Group>
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Posts";
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>Group</h4>
+    <h4>Posts</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Group.Id)
-        </dt>
-        <dd>
-            @Html.DisplayNameFor(model => model.Group.Id)
-        </dd>
-    </dl>
-</div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Blog Title
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var item in Model.Contacts)
+        @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
+            {
+                <table class="table">
+            <dt>
+                @Html.DisplayFor(modelItem => item.Title)
+            </dt>
+            <td> 
+                @Html.DisplayFor(modelItem => item.Description)
+            </td> 
+                    
+            </table>
+                <table class="table">
+            </table>
+            
+            <dt>
+                Comments:
+            </dt>
+            @foreach (var comment in item.Comment)
+            {
 
-            </tr>
-        }
-    </tbody>
-</table>
+                <p>
+                    <td>
+                        @Html.DisplayFor(modelItem => comment.Body)
+                    </td>
+                </p>
+            }
+            <p><a asp-action="Comment" asp-route-id="@item.Id">Add Comment</a></p>
+            }
+            <p></p>
+        }  
+    </dl>
+</div> 
 
-
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Group.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<p> @ViewBag.userId</p>

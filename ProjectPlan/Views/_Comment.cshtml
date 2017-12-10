@@ -1,0 +1,14 @@
+﻿@model ProjectPlan.Models.Comment
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <div class="addcommentbox">
+        <h2> Add Comment </h2>
+        @Html.TextAreaFor(model => model.Body)
+        <div class="ErrorMessage">
+            @Html.ValidationMessageFor(model => model.Body)
+        </div>
+        <input id="addComment" type="button" onclick="" value="Add" />
+    </div>
+}

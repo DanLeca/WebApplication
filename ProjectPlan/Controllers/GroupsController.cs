@@ -7,25 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjectPlan.Data;
 using ProjectPlan.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProjectPlan.Controllers
 {
     public class GroupsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public GroupsController(ApplicationDbContext context)
+        public GroupsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
         // GET: Groups
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Group.ToListAsync());
+            return View(await _context.Group.Include(g => g.Comment).ToListAsync());
         }
 
         // GET: Groups/Details/5
+        [HttpGet("Details/{id}")]
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,16 +41,17 @@ namespace ProjectPlan.Controllers
 
             Group group = await _context.Group.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (group == null)
+            if (@group == null)
             {
                 return NotFound();
             }
 
             GroupDetailsModel viewModel = await GetGroupDetails(group);
 
-            return View(viewModel);
+            return View(await _context.Group.Include(g => g.Comment).ToListAsync());
         }
 
+        [Authorize]
         public async Task<IActionResult> Details([Bind("Id, FirstName")]
             GroupDetailsModel viewModel)
         {
@@ -84,20 +91,28 @@ namespace ProjectPlan.Controllers
         }
 
         // GET: Groups/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
+
+
 
         // POST: Groups/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Title, Description, Id")] Group @group)
         {
             if (ModelState.IsValid)
             {
+                var userId = _userManager.GetUserId(HttpContext.User);
+
+                group.ApplicationUser = await _userManager.FindByIdAsync(userId);
+
                 _context.Add(@group);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -105,7 +120,51 @@ namespace ProjectPlan.Controllers
             return View(@group);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Comment(int? id, [Bind("Body")] Comment comment)
+        {
+            if (ModelState.IsValid)
+            {
+                var lemon = await _context.Group.SingleOrDefaultAsync(m => m.Id == id);
+                comment.MyGroup = lemon;
+
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(comment);
+        }
+
+        public IActionResult Comment()
+        {
+            return View();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // GET: Groups/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -114,7 +173,7 @@ namespace ProjectPlan.Controllers
             }
 
             var @group = await _context.Group.SingleOrDefaultAsync(m => m.Id == id);
-            
+
             if (@group == null)
             {
                 return NotFound();
@@ -126,8 +185,9 @@ namespace ProjectPlan.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title, Description, Id")] Group @group)
+        public async Task<IActionResult> Edit(int id, [Bind("Title, Description, Id, ApplicationUser")] Group @group)
         {
             if (id != @group.Id)
             {
@@ -138,7 +198,7 @@ namespace ProjectPlan.Controllers
             {
                 try
                 {
-      
+
                     _context.Update(@group);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -159,6 +219,7 @@ namespace ProjectPlan.Controllers
         }
 
         // GET: Groups/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -179,6 +240,7 @@ namespace ProjectPlan.Controllers
         // POST: Groups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var @group = await _context.Group.SingleOrDefaultAsync(m => m.Id == id);

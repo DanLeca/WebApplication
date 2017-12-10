@@ -11,9 +11,10 @@ using System;
 namespace ProjectPlan.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171130133727_Seed2")]
+    partial class Seed2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,13 +185,20 @@ namespace ProjectPlan.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Body");
+                    b.Property<string>("Author")
+                        .HasMaxLength(50);
 
-                    b.Property<int?>("MyGroupId");
+                    b.Property<string>("Body")
+                        .IsRequired();
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("PostId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MyGroupId");
+                    b.HasIndex("PostId");
 
                     b.ToTable("Comment");
                 });
@@ -280,9 +288,10 @@ namespace ProjectPlan.Data.Migrations
 
             modelBuilder.Entity("ProjectPlan.Models.Comment", b =>
                 {
-                    b.HasOne("ProjectPlan.Models.Group", "MyGroup")
-                        .WithMany("Comment")
-                        .HasForeignKey("MyGroupId");
+                    b.HasOne("ProjectPlan.Models.Group", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ProjectPlan.Models.Contact", b =>

@@ -11,9 +11,10 @@ using System;
 namespace ProjectPlan.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171206204204_Comment")]
+    partial class Comment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,11 +187,11 @@ namespace ProjectPlan.Data.Migrations
 
                     b.Property<string>("Body");
 
-                    b.Property<int?>("MyGroupId");
+                    b.Property<int?>("GroupId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MyGroupId");
+                    b.HasIndex("GroupId");
 
                     b.ToTable("Comment");
                 });
@@ -280,9 +281,9 @@ namespace ProjectPlan.Data.Migrations
 
             modelBuilder.Entity("ProjectPlan.Models.Comment", b =>
                 {
-                    b.HasOne("ProjectPlan.Models.Group", "MyGroup")
+                    b.HasOne("ProjectPlan.Models.Group", "Group")
                         .WithMany("Comment")
-                        .HasForeignKey("MyGroupId");
+                        .HasForeignKey("GroupId");
                 });
 
             modelBuilder.Entity("ProjectPlan.Models.Contact", b =>

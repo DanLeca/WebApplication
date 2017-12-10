@@ -25,5 +25,6 @@ namespace ProjectPlan.Data
 
         public DbSet<ProjectPlan.Models.Group> Group { get; set; }
         public DbSet<ProjectPlan.Models.Contact> Contact { get; set; }
+        public DbSet<ProjectPlan.Models.Comment> Comment { get; set; }
     }
 }

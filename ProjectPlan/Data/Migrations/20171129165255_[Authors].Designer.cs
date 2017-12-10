@@ -11,9 +11,10 @@ using System;
 namespace ProjectPlan.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171129165255_[Authors]")]
+    partial class Authors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,22 +180,6 @@ namespace ProjectPlan.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("ProjectPlan.Models.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Body");
-
-                    b.Property<int?>("MyGroupId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MyGroupId");
-
-                    b.ToTable("Comment");
-                });
-
             modelBuilder.Entity("ProjectPlan.Models.Contact", b =>
                 {
                     b.Property<int>("Id")
@@ -276,13 +261,6 @@ namespace ProjectPlan.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProjectPlan.Models.Comment", b =>
-                {
-                    b.HasOne("ProjectPlan.Models.Group", "MyGroup")
-                        .WithMany("Comment")
-                        .HasForeignKey("MyGroupId");
                 });
 
             modelBuilder.Entity("ProjectPlan.Models.Contact", b =>
