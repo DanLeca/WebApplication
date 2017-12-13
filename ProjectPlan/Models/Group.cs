@@ -5,18 +5,20 @@ namespace ProjectPlan.Models
 {
     public class Group
     {
+        [Required]
         public int Id
         {
             get; set;
         }
 
-        [Required]
+        [Required(ErrorMessage = "Enter a title for the blog post")]
+        [StringLength(50, MinimumLength = 3)]
         public string Title
         {
             get; set;
         }
 
-        [Required]
+        [Required(ErrorMessage = "Enter a description for the blog post")]
         public string Description
         {
             get; set;
@@ -28,6 +30,11 @@ namespace ProjectPlan.Models
         }
 
         public virtual ICollection<Comment> Comment
+        {
+            get; set;
+        }
+
+        public int viewed
         {
             get; set;
         }

@@ -36,6 +36,8 @@
             }
             <p><a asp-action="Comment" asp-route-id="@item.Id">Add Comment</a></p>
             }
+
+            <td>This post has been viewed @item.viewed times.</td>
             <p></p>
         }  
     </dl>

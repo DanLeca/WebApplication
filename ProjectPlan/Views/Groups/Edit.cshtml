@@ -10,6 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />

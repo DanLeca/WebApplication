@@ -1,4 +1,6 @@
-﻿namespace ProjectPlan.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProjectPlan.Models
 {
     public class Comment
     {
@@ -7,6 +9,8 @@
             get; set;
         }
 
+        [MinLength(3)]
+        [Required]
         public string Body
         {
             get; set;

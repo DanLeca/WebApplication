@@ -11,11 +11,19 @@
     <h4>Group</h4>
     <hr />
     <dl class="dl-horizontal">
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
         <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
     

@@ -9,26 +9,6 @@ using System.Collections.Generic;
 
 namespace ProjectPlan
 {
-    /*
-    public static class Initializer
-    {
-        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
-        {
-            context.Database.EnsureCreated();
-
-            if (!context.Users.Any())
-            {
-                CreateUser(userManager, "Member1@email.com", "password", true);
-
-                for (int i = 1; i <= 5; i++)
-                {
-                    CreateUser(userManager, "Customer" + i + "@email.com", "password", false);
-                }
-            }
-        }
-    }
-    */
-
     public class Initializer
     {
         public static void Initialize(UserManager <ApplicationUser> userManager, ApplicationDbContext context)
